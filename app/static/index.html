@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>PlantCare · Calendario de cuidados</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <span class="logo" aria-hidden="true">🌿</span>
+      <div>
+        <h1>PlantCare</h1>
+        <p>Calendario de cuidados</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <div id="banner" class="banner" hidden></div>
+
+    <div class="side">
+      <!-- Recordatorios -->
+      <section class="card" aria-labelledby="reminders-title">
+        <div class="card__head">
+          <h2 id="reminders-title">⏰ Recordatorios</h2>
+          <label class="inline-select">
+            <span class="sr-only">Periodo de recordatorios</span>
+            <select id="days-ahead">
+              <option value="7" selected>Próximos 7 días</option>
+              <option value="14">Próximos 14 días</option>
+              <option value="30">Próximos 30 días</option>
+            </select>
+          </label>
+        </div>
+        <div id="reminders-state" class="state" hidden></div>
+        <ul id="reminders-list" class="list" aria-live="polite"></ul>
+      </section>
+
+      <!-- Nueva tarea -->
+      <section class="card" aria-labelledby="form-title">
+        <h2 id="form-title">➕ Nueva tarea</h2>
+        <form id="task-form" novalidate>
+          <div class="field">
+            <label for="plant_name">Planta</label>
+            <input id="plant_name" name="plant_name" type="text" maxlength="100" required
+                   autocomplete="off" placeholder="Ej.: Monstera" list="plant-options">
+            <p class="field__error" id="err-plant_name" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="care_type">Tipo de cuidado</label>
+            <select id="care_type" name="care_type" required>
+              <option value="riego">💧 Riego</option>
+              <option value="fertilizacion">🌱 Fertilización</option>
+              <option value="poda">✂️ Poda</option>
+            </select>
+            <p class="field__error" id="err-care_type" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="scheduled_date">Fecha programada</label>
+            <input id="scheduled_date" name="scheduled_date" type="date" required>
+            <p class="field__error" id="err-scheduled_date" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="description">Descripción <span class="muted">(opcional)</span></label>
+            <textarea id="description" name="description" rows="3" maxlength="500"
+                      placeholder="Ej.: Regar con poca agua"></textarea>
+            <p class="field__error" id="err-description" role="alert"></p>
+          </div>
+          <button type="submit" class="btn btn--primary" id="submit-btn">Registrar tarea</button>
+        </form>
+      </section>
+    </div>
+
+    <!-- Calendario -->
+    <section class="card" aria-labelledby="calendar-title">
+      <h2 id="calendar-title">📅 Calendario</h2>
+
+      <form id="filters" class="filters" novalidate>
+        <div class="field">
+          <label for="filter-status">Estado</label>
+          <select id="filter-status">
+            <option value="">Todos</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="vencida">Vencida</option>
+            <option value="completada">Completada</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="filter-plant">Planta</label>
+          <input id="filter-plant" type="search" placeholder="Nombre de la planta"
+                 autocomplete="off" list="plant-options">
+        </div>
+        <button type="button" class="btn btn--ghost" id="clear-filters">Limpiar</button>
+      </form>
+      <datalist id="plant-options"></datalist>
+
+      <div id="tasks-state" class="state" hidden></div>
+      <ul id="task-list" class="list" aria-live="polite"></ul>
+    </section>
+  </main>
+
+  <footer class="footer">PlantCare · los datos se guardan en memoria y se pierden al reiniciar el servidor.</footer>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
